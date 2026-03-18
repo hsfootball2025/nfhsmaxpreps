@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>NFHS & Maxpreps Network</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+color:white;
+background:url("https://i.ibb.co.com/pr6gGJYC/image.png") center/cover no-repeat fixed;
+}
+
+.overlay{
+background:rgba(0,0,0,0.88);
+}
+
+/* HEADER */
+
+header{
+background:#111;
+padding:20px 40px;
+border-bottom:1px solid #222;
+font-weight:bold;
+}
+
+/* HERO */
+
+.hero{
+text-align:center;
+padding:60px 20px;
+}
+
+.hero h1{
+font-size:34px;
+margin-bottom:15px;
+}
+
+.hero p{
+color:#bbb;
+max-width:650px;
+margin:auto;
+}
+
+/* PROGRESS */
+
+.progress{
+display:flex;
+justify-content:center;
+gap:50px;
+margin-top:40px;
+color:#777;
+}
+
+.progress .active{
+color:#ff3b3b;
+}
+
+/* LAYOUT */
+
+.container{
+display:flex;
+gap:30px;
+max-width:1000px;
+margin:auto;
+padding:20px;
+flex-wrap:wrap;
+}
+
+/* LEFT */
+
+.left{
+flex:1;
+min-width:300px;
+}
+
+/* SUMMARY */
+
+.summary{
+width:280px;
+background:#1a1a1a;
+padding:20px;
+border-radius:6px;
+height:fit-content;
+}
+
+/* STEP */
+
+.step{
+display:none;
+}
+
+.step.active{
+display:block;
+}
+
+/* PLAN */
+
+.plans{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.plan{
+background:#e6e6e6;
+color:black;
+padding:20px;
+width:200px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.plan:hover{
+transform:scale(1.05);
+}
+
+.best{
+background:#ff3b3b;
+color:white;
+padding:3px 10px;
+border-radius:20px;
+font-size:12px;
+}
+
+/* INPUT */
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:none;
+border-radius:5px;
+}
+
+/* SCHOOL */
+
+.school{
+padding:10px;
+border-bottom:1px solid #333;
+cursor:pointer;
+}
+
+.school:hover{
+background:#222;
+}
+
+/* BUTTON */
+
+button{
+width:100%;
+padding:14px;
+background:#ff3b3b;
+border:none;
+color:white;
+margin-top:20px;
+cursor:pointer;
+}
+
+/* MARKETING SECTIONS */
+
+.section{
+padding:80px 20px;
+text-align:center;
+}
+
+.section h2{
+font-size:28px;
+}
+
+.section p{
+color:#bbb;
+max-width:700px;
+margin:auto;
+}
+
+/* SPORTS */
+
+.sports-grid{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:15px;
+margin-top:30px;
+}
+
+.sport-card{
+background:#1a1a1a;
+padding:20px 30px;
+border-radius:6px;
+}
+
+/* FEATURE */
+
+.feature{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:60px;
+padding:80px 20px;
+flex-wrap:wrap;
+}
+
+.feature img{
+width:320px;
+border-radius:10px;
+}
+
+.feature-text{
+max-width:400px;
+text-align:left;
+}
+
+.reverse{
+flex-direction:row-reverse;
+}
+
+/* DEVICES */
+
+.devices{
+background:#1c1c1c;
+padding:80px 20px;
+text-align:center;
+}
+
+.device-grid{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:15px;
+margin-top:30px;
+}
+
+.device-grid div{
+border:1px solid #444;
+padding:15px 30px;
+}
+
+/* FAQ */
+
+.faq{
+max-width:800px;
+margin:auto;
+padding:80px 20px;
+}
+
+.faq-item{
+border-bottom:1px solid #333;
+padding:20px 0;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:40px;
+border-top:1px solid #222;
+color:#aaa;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="overlay">
+
+<header>
+
+Maxpreps & NFHS Network
+
+</header>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<h1>Catch All Games, Live & On-Demand</h1>
+
+<div class="progress">
+
+<span id="p1" class="active">Pass</span>
+<span id="p2">Account</span>
+<span id="p3">School</span>
+<span id="p4">Payment</span>
+
+</div>
+
+</section>
+
+
+<!-- SUBSCRIPTION FLOW -->
+
+<div class="container">
+
+<div class="left">
+
+<!-- STEP 1 -->
+
+<div id="step1" class="step active">
+
+<div class="plans">
+
+<div class="plan" onclick="selectPlan('Annual Pass',27.99)">
+<span class="best">Best Value</span>
+<h3>Annual Pass</h3>
+<h2>$27.99</h2>
+</div>
+
+<div class="plan" onclick="selectPlan('Monthly Pass',10.99)">
+<h3>Monthly Pass</h3>
+<h2>$10.99</h2>
+</div>
+
+</div>
+
+<button onclick="nextStep(2)">Continue</button>
+
+</div>
+
+<!-- STEP 2 -->
+
+<div id="step2" class="step">
+
+<h2>Create Account</h2>
+
+<input placeholder="Email">
+
+<input type="password" placeholder="Password">
+
+<button onclick="nextStep(3)">Continue</button>
+
+</div>
+
+<!-- STEP 3 -->
+
+<div id="step3" class="step">
+
+<h2>Choose School</h2>
+
+<input id="search" placeholder="Search school">
+
+<div id="schoolList"></div>
+
+<button onclick="nextStep(4)">Continue</button>
+
+</div>
+
+<!-- STEP 4 -->
+
+<div id="step4" class="step">
+
+<h2>Payment</h2>
+
+<p>Pay securely using PayPal</p>
+
+<div id="paypal-button-container"></div>
+
+</div>
+
+</div>
+
+
+<!-- ORDER SUMMARY -->
+
+<div class="summary">
+
+<h3>Order Summary</h3>
+
+<p id="sumPlan">Plan: -</p>
+
+<p id="sumSchool">School: -</p>
+
+<h2 id="sumPrice">$0</h2>
+
+</div>
+
+</div>
+
+<p>  All Passes include: </p>
+<p>  ● Full access to Live regular season and post-season sporting events </p>
+<p>  ● Immediate access to events when they are available On Demand </p>
+<p>  ● Support for participating school's programs </p>
+<p>  ● Access to creating clips from your favorite moments </p>
+
+<!-- SPORTS SECTION -->
+
+<section class="section">
+
+<h2>Stream games. Stream live.</h2>
+
+<p>
+Watch high school games in over 30 different sports from all 50 states.
+</p>
+
+<div class="sports-grid">
+
+<div class="sport-card">Basketball</div>
+<div class="sport-card">Football</div>
+<div class="sport-card">Baseball</div>
+<div class="sport-card">Soccer</div>
+<div class="sport-card">Volleyball</div>
+<div class="sport-card">Wrestling</div>
+<div class="sport-card">Lacrosse</div>
+<div class="sport-card">Track</div>
+
+</div>
+
+</section>
+
+
+<!-- FEATURE -->
+
+<section class="feature">
+
+<div class="feature-text">
+
+<h2>Clip, Save, and Replay your favorite sports moments.</h2>
+
+<p>
+Easily create clips to share and rewatch the most memorable moments - anytime, anywhere.
+</p>
+
+</div>
+
+<img src="https://i.ibb.co.com/zTXG0XW8/image.png">
+
+</section>
+
+
+<section class="feature reverse">
+
+<img src="https://i.ibb.co.com/Z6ZqPY44/image.png">
+
+<div class="feature-text">
+
+<h2>Follow your school. Favorite your teams.</h2>
+
+<p>
+Watch and keep up with your favorite team even when you can’t be at the game. Plus get access to top regular season games featured throughout each season.
+</p>
+
+</div>
+
+</section>
+
+
+<section class="feature">
+
+<div class="feature-text">
+
+<h2>Catch post-season action.</h2>
+
+<p>
+Stream playoff and state championship games from over 44 National Federation of State High Schools member state associations. Watch any state championships live for fall, winter, and spring competitions.
+</p>
+
+</div>
+
+<img src="https://i.ibb.co.com/XrVr2GZj/image.png">
+
+</section>
+
+
+<!-- DEVICES -->
+
+<section class="devices">
+
+<h2>Stream Anytime. Anywhere.</h2>
+
+<p>Stream live and on demand sporting events on all your favorite devices.
+</p>
+
+<div class="device-grid">
+
+<div>iOS</div>
+<div>Android</div>
+<div>Web Browser</div>
+<div>Fire TV</div>
+<div>Apple TV</div>
+<div>Roku</div>
+<div>Google TV</div>
+
+</div>
+
+</section>
+
+
+<!-- FAQ -->
+
+<section class="faq">
+
+<h2>Frequently Asked Questions</h2>
+
+<div class="faq-item">
+<strong>What games can I watch?</strong>
+<p>Subscribers can watch live games, replays, and championship events.</p>
+</div>
+
+<div class="faq-item">
+<strong>Can I watch games after they finish?</strong>
+<p>Yes. All games are available on demand after the live broadcast.</p>
+</div>
+
+<div class="faq-item">
+<strong>What devices can I watch on?</strong>
+<p>You can watch on phones, tablets, browsers, and smart TVs.</p>
+</div>
+
+<div class="faq-item">
+<strong>How do I cancel?</strong>
+<p>You can cancel anytime from your account settings.</p>
+</div>
+
+</section>
+
+
+<footer>
+
+© 2026 LIVE High School Sports
+
+</footer>
+
+</div>
+
+
+<script>
+
+let plan=""
+let price=0
+let school=""
+
+function selectPlan(p,v){
+
+plan=p
+price=v
+
+document.getElementById("sumPlan").innerText="Plan: "+p
+document.getElementById("sumPrice").innerText="$"+v
+
+}
+
+function nextStep(n){
+
+document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"))
+document.getElementById("step"+n).classList.add("active")
+
+document.querySelectorAll(".progress span").forEach(s=>s.classList.remove("active"))
+document.getElementById("p"+n).classList.add("active")
+
+}
+
+/* SCHOOL LIST */
+
+const schools=[
+"Allen High School, TX",
+"IMG Academy, FL",
+"Mater Dei High School, CA",
+"North Shore High School, TX",
+"Buford High School, GA",
+"Duncanville High School, TX",
+"St John Bosco High School, CA"
+]
+
+const list=document.getElementById("schoolList")
+
+function render(data){
+
+list.innerHTML=""
+
+data.forEach(s=>{
+
+let div=document.createElement("div")
+
+div.className="school"
+div.innerText=s
+
+div.onclick=function(){
+
+school=s
+
+document.getElementById("sumSchool").innerText="School: "+s
+
+}
+
+list.appendChild(div)
+
+})
+
+}
+
+render(schools)
+
+document.getElementById("search").addEventListener("input",function(){
+
+let v=this.value.toLowerCase()
+
+let filtered=schools.filter(s=>s.toLowerCase().includes(v))
+
+render(filtered)
+
+})
+
+</script>
+
+
+<script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&currency=USD"></script>
+
+<script>
+
+paypal.Buttons({
+
+createOrder: function(data, actions) {
+
+return actions.order.create({
+
+purchase_units: [{
+amount: { value: price.toString() }
+}]
+
+})
+
+},
+
+onApprove: function(data, actions) {
+
+return actions.order.capture().then(function(details) {
+
+alert("Payment Successful!")
+
+})
+
+}
+
+}).render('#paypal-button-container')
+
+</script>
+
+</body>
+</html>
