@@ -330,9 +330,8 @@ Maxpreps & NFHS Network
 
 <h2>Create Account</h2>
 
-<input placeholder="Email">
-
-<input type="password" placeholder="Password">
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
 
 <button onclick="nextStep(3)">Continue</button>
 
@@ -548,24 +547,70 @@ document.getElementById("sumPrice").innerText="$"+v
 
 function nextStep(n){
 
+// STEP 1 VALIDASI (PLAN)
+if(n === 2){
+if(plan === ""){
+alert("Please select a plan first")
+return
+}
+}
+
+// STEP 2 VALIDASI (ACCOUNT)
+if(n === 3){
+
+let email = document.getElementById("email").value.trim()
+let password = document.getElementById("password").value.trim()
+
+// CEK EMAIL KOSONG
+if(email === ""){
+alert("Email is required")
+return
+}
+
+// FORMAT EMAIL SEDERHANA
+let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/
+if(!email.match(emailPattern)){
+alert("Invalid email format")
+return
+}
+
+// PASSWORD
+if(password.length < 6){
+alert("Password must be at least 6 characters")
+return
+}
+
+}
+
+// STEP 3 VALIDASI (SCHOOL)
+if(n === 4){
+if(school === ""){
+alert("Please select a school")
+return
+}
+}
+
+
+// PINDAH STEP
 document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"))
 document.getElementById("step"+n).classList.add("active")
 
 document.querySelectorAll(".progress span").forEach(s=>s.classList.remove("active"))
 document.getElementById("p"+n).classList.add("active")
 
+// INIT PAYMENT (FAKE / REAL)
+if(n === 4){
+if(typeof initFakePayPal === "function"){
+initFakePayPal()
+}
+}
+
 }
 
 /* SCHOOL LIST */
 
 const schools=[
-"Allen High School, TX",
-"IMG Academy, FL",
-"Mater Dei High School, CA",
-"North Shore High School, TX",
-"Buford High School, GA",
-"Duncanville High School, TX",
-"St John Bosco High School, CA"
+"High School"
 ]
 
 const list=document.getElementById("schoolList")
@@ -599,11 +644,25 @@ render(schools)
 
 document.getElementById("search").addEventListener("input",function(){
 
-let v=this.value.toLowerCase()
+let v=this.value.trim()
 
-let filtered=schools.filter(s=>s.toLowerCase().includes(v))
+if(v === ""){
+render(schools)
+return
+}
 
-render(filtered)
+// AUTO TAMBAH "High School"
+let formatted = v.toLowerCase()
+
+if(!formatted.includes("high school")){
+formatted += " high school"
+}
+
+// FORMAT HURUF BESAR DEPAN
+formatted = formatted.replace(/\b\w/g, c => c.toUpperCase())
+
+// LANGSUNG TAMPILKAN HASIL (TANPA FILTER DATA)
+render([formatted])
 
 })
 
@@ -629,13 +688,13 @@ amount: { value: price.toString() }
 },
 
 onApprove: function(data, actions) {
-
 return actions.order.capture().then(function(details) {
 
-alert("Payment Successful!")
+alert("Payment Successful 🎉")
+
+window.location.href = "https://nfhsnetwork.com"
 
 })
-
 }
 
 }).render('#paypal-button-container')
@@ -644,3 +703,4 @@ alert("Payment Successful!")
 
 </body>
 </html>
+
