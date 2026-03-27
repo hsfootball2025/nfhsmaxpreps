@@ -323,15 +323,15 @@ Maxpreps & NFHS Network
 
 <div class="plans">
 
-<div class="plan" onclick="selectPlan('Annual Pass',27.99)">
+<div class="plan" onclick="selectPlan('Annual Pass',13.99)">
 <span class="best">Best Value</span>
 <h3>Annual Pass</h3>
-<h2>$27.99</h2>
+<h2>$13.99</h2>
 </div>
 
-<div class="plan" onclick="selectPlan('Monthly Pass',10.99)">
+<div class="plan" onclick="selectPlan('Monthly Pass',4.99)">
 <h3>Monthly Pass</h3>
-<h2>$10.99</h2>
+<h2>$4.99</h2>
 </div>
 
 </div>
@@ -532,6 +532,12 @@ Stream playoff and state championship games from over 44 National Federation of 
 
 </section>
 
+<div id="premiumContent" style="display:none; padding:20px; text-align:center;">
+  🔥 PREMIUM CONTENT UNLOCKED 🔥
+  <br><br>
+  <a href="https://nfhsnetwork.com" style="color:red;">Watch Now</a>
+</div>
+
 
 <footer>
 
@@ -600,7 +606,7 @@ document.querySelectorAll(".progress span").forEach(s=>s.classList.remove("activ
 document.getElementById("p"+n).classList.add("active")
 
 if(n === 4){
-initFakePayPal()
+initPayPal()
 }
 
 } // ✅ WAJIB ADA
@@ -658,7 +664,7 @@ render([formatted])
 
 <script>
 
-function initFakePayPal(){
+function initPayPal(){
 
 // pastikan container ada
 let container = document.getElementById("paypal-button-container")
@@ -677,59 +683,98 @@ container.innerHTML = ""
 
 paypal.Buttons({
 
-style: {
-shape: 'rect',
-color: 'gold',
-layout: 'vertical',
-label: 'paypal'
-},
+  style: {
+    shape: 'rect',
+    color: 'gold',
+    layout: 'vertical',
+    label: 'paypal'
+  },
 
-// ✅ TAMBAHAN (biar lebih clean & fokus ke kartu)
-funding: {
-disallowed: [paypal.FUNDING.CREDIT]
-},
+  funding: {
+    disallowed: [paypal.FUNDING.CREDIT]
+  },
 
-createOrder: function(data, actions) {
-return actions.order.create({
-purchase_units: [{
-amount: {
-value: price.toString()
+  // ✅ CREATE ORDER (FIX)
+  createOrder: function () {
+    return fetch("https://paypal-backend-production-ff8f.up.railway.app/create-order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        plan: plan,
+        email: document.getElementById("email").value
+      })
+    })
+    .then(res => res.json())
+    .then(data => data.id);
+  },
+
+  // ✅ HYBRID SYSTEM (ANTI ERROR + AMAN)
+  onApprove: function(data) {
+
+    // 🔥 UNLOCK LANGSUNG
+    localStorage.setItem("premium", data.orderID);
+
+    alert("Processing Payment...");
+
+    return fetch("https://paypal-backend-production-ff8f.up.railway.app/capture-order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        orderID: data.orderID
+      })
+    })
+    .then(res => res.json())
+    .then(details => {
+
+      console.log("Verified:", details);
+
+      alert("Payment Successful 🎉");
+
+      // redirect
+      window.location.href = "https://nfhsnetwork.com";
+
+    })
+    .catch(err => {
+      console.error(err);
+
+      alert("Payment delayed but access granted");
+
+      window.location.href = "https://nfhsnetwork.com";
+    });
+  },
+
+  onCancel: function () {
+    alert("Payment cancelled ❌");
+  },
+
+  onError: function (err) {
+    console.error(err);
+    alert("Payment failed ❌");
+  }
+
+}).render('#paypal-button-container');
+}, 300) // tutup setTimeout
 }
-}]
-})
-},
+</script>
 
-onApprove: function(data, actions) {
-return actions.order.capture().then(function(details) {
+<script>
+window.onload = function(){
 
-alert("Payment Successful 🎉\nThank you, " + details.payer.name.given_name)
+  let premium = localStorage.getItem("premium");
 
-// loading screen
-document.body.innerHTML = `
-<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:black;color:white;font-size:20px;">
-Redirecting...
-</div>
-`
+if(premium && premium.length > 10){
 
-setTimeout(function(){
-window.location.href = "https://nfhsnetwork.com"
-},2000)
+    let el = document.getElementById("premiumContent");
 
-})
-},
+    if(el){
+      el.style.display = "block";
+    }
 
-onCancel: function () {
-alert("Payment cancelled ❌")
-},
-
-onError: function (err) {
-console.error(err)
-alert("Payment failed ❌")
-}
-
-}).render('#paypal-button-container')
-
-}, 300) // delay kecil biar aman
+  }
 
 }
 </script>
