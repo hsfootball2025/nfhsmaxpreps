@@ -323,15 +323,15 @@ Maxpreps & NFHS Network
 
 <div class="plans">
 
-<div class="plan" onclick="selectPlan('Annual Pass',13.99)">
+<div class="plan" onclick="selectPlan('Annual Pass',21.99)">
 <span class="best">Best Value</span>
 <h3>Annual Pass</h3>
-<h2>$13.99</h2>
+<h2>$21.99</h2>
 </div>
 
-<div class="plan" onclick="selectPlan('Monthly Pass',4.99)">
+<div class="plan" onclick="selectPlan('Monthly Pass',9.99)">
 <h3>Monthly Pass</h3>
-<h2>$4.99</h2>
+<h2>$9.99</h2>
 </div>
 
 </div>
@@ -660,7 +660,7 @@ render([formatted])
 
 
 <!-- PAYPAL SDK -->
-<script src="https://www.paypal.com/sdk/js?client-id=AfKG8W_CmXkS9-TxTA4rgRUPilHwrFYMqiiHLRRrtB7JRzOSdOqck2h6Hx7fmjKFqx0ntXC9R-pVe0mS&currency=USD&components=buttons,funding-eligibility"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AQIfZirVNFy6Yph-3I1h7gqtjn7xRWPpY1ROWw-Wb-2V_hwhlGQlAvDoCtdqyqdyxqkRD1BgpVpOuzyQ&currency=USD&components=buttons,funding-eligibility"></script>
 
 <script>
 
@@ -694,56 +694,59 @@ paypal.Buttons({
     disallowed: [paypal.FUNDING.CREDIT]
   },
 
-  // ✅ CREATE ORDER (FIX)
-  createOrder: function () {
-    return fetch("https://paypal-backend-production-ff8f.up.railway.app/create-order", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        plan: plan,
-        email: document.getElementById("email").value
-      })
-    })
-    .then(res => res.json())
-    .then(data => data.id);
+ <!-- PAYPAL SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=AQIfZirVNFy6Yph-3I1h7gqtjn7xRWPpY1ROWw-Wb-2V_hwhlGQlAvDoCtdqyqdyxqkRD1BgpVpOuzyQ&currency=USD"></script>
+
+<script>
+
+function initPayPal(){
+
+let container = document.getElementById("paypal-button-container")
+
+if(!container){
+console.error("Container PayPal tidak ditemukan")
+return
+}
+
+container.innerHTML = "Loading payment..."
+
+setTimeout(() => {
+
+container.innerHTML = ""
+
+paypal.Buttons({
+
+  style: {
+    shape: 'rect',
+    color: 'gold',
+    layout: 'vertical',
+    label: 'paypal'
   },
 
-  // ✅ HYBRID SYSTEM (ANTI ERROR + AMAN)
-  onApprove: function(data) {
+  // ✅ TANPA BACKEND (FIX PAYMENT FAILED)
+  createOrder: function (data, actions) {
+    return actions.order.create({
+      purchase_units: [{
+        amount: {
+          value: price.toString()
+        }
+      }]
+    });
+  },
 
-    // 🔥 UNLOCK LANGSUNG
-    localStorage.setItem("premium", data.orderID);
+  // ✅ LANGSUNG CAPTURE (UANG MASUK KE PAYPAL)
+  onApprove: function (data, actions) {
+    return actions.order.capture().then(function(details) {
 
-    alert("Processing Payment...");
+      console.log(details);
 
-    return fetch("https://paypal-backend-production-ff8f.up.railway.app/capture-order", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        orderID: data.orderID
-      })
-    })
-    .then(res => res.json())
-    .then(details => {
-
-      console.log("Verified:", details);
+      // simpan premium
+      localStorage.setItem("premium", "true");
 
       alert("Payment Successful 🎉");
 
-      // redirect
       window.location.href = "https://nfhsnetwork.com";
 
-    })
-    .catch(err => {
-      console.error(err);
-
-      alert("Payment delayed but access granted");
-
-      window.location.href = "https://nfhsnetwork.com";
     });
   },
 
@@ -757,8 +760,11 @@ paypal.Buttons({
   }
 
 }).render('#paypal-button-container');
-}, 300) // tutup setTimeout
+
+}, 300)
+
 }
+
 </script>
 
 <script>
