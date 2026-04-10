@@ -658,7 +658,6 @@ render([formatted])
 
 </script>
 
-
 <!-- PAYPAL SDK -->
 <script src="https://www.paypal.com/sdk/js?client-id=AQIfZirVNFy6Yph-3I1h7gqtjn7xRWPpY1ROWw-Wb-2V_hwhlGQlAvDoCtdqyqdyxqkRD1BgpVpOuzyQ&currency=USD&components=buttons,funding-eligibility"></script>
 
@@ -690,40 +689,7 @@ paypal.Buttons({
     label: 'paypal'
   },
 
-  funding: {
-    disallowed: [paypal.FUNDING.CREDIT]
-  },
-
- <!-- PAYPAL SDK -->
-<script src="https://www.paypal.com/sdk/js?client-id=AQIfZirVNFy6Yph-3I1h7gqtjn7xRWPpY1ROWw-Wb-2V_hwhlGQlAvDoCtdqyqdyxqkRD1BgpVpOuzyQ&currency=USD"></script>
-
-<script>
-
-function initPayPal(){
-
-let container = document.getElementById("paypal-button-container")
-
-if(!container){
-console.error("Container PayPal tidak ditemukan")
-return
-}
-
-container.innerHTML = "Loading payment..."
-
-setTimeout(() => {
-
-container.innerHTML = ""
-
-paypal.Buttons({
-
-  style: {
-    shape: 'rect',
-    color: 'gold',
-    layout: 'vertical',
-    label: 'paypal'
-  },
-
-  // ✅ TANPA BACKEND (FIX PAYMENT FAILED)
+  // ✅ TANPA BACKEND (langsung masuk ke PayPal kamu)
   createOrder: function (data, actions) {
     return actions.order.create({
       purchase_units: [{
@@ -734,13 +700,12 @@ paypal.Buttons({
     });
   },
 
-  // ✅ LANGSUNG CAPTURE (UANG MASUK KE PAYPAL)
+  // ✅ CAPTURE LANGSUNG
   onApprove: function (data, actions) {
     return actions.order.capture().then(function(details) {
 
       console.log(details);
 
-      // simpan premium
       localStorage.setItem("premium", "true");
 
       alert("Payment Successful 🎉");
